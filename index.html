@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Miku Python Guessing Game</title>
+<script src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython_stdlib.js"></script>
+
+<style>
+    body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #39c5bb, #71d9f5);
+        color: #fff;
+    }
+    .container {
+        max-width: 500px;
+        margin: 80px auto;
+        padding: 30px;
+        background: rgba(0,0,0,0.25);
+        border-radius: 15px;
+        text-align: center;
+        backdrop-filter: blur(6px);
+        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    input {
+        width: 80%;
+        padding: 12px;
+        border-radius: 10px;
+        border: 2px solid #39c5bb;
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+    button {
+        padding: 12px 30px;
+        background: #39c5bb;
+        border: none;
+        border-radius: 10px;
+        font-size: 18px;
+        color: #fff;
+        cursor: pointer;
+    }
+    .msg {
+        margin-top: 20px;
+        font-size: 22px;
+        min-height: 40px;
+    }
+    .miku-img {
+        width: 220px;
+        margin-top: 20px;
+        filter: drop-shadow(0 0 10px #fff);
+    }
+</style>
+</head>
+
+<body onload="brython()">
+
+<div class="container">
+    <h1>🎤 Hatsune Miku Python Guessing Game 🎶</h1>
+    
+    <input id="guess" type="number" placeholder="Enter your guess…">
+    <br>
+    <button id="check">Guess</button>
+
+    <div class="msg" id="range">number 1-100</div>
+
+    <div class="msg" id="message"></div>
+
+    <img src="https://i.imgur.com/kYIvG2l.png" class="miku-img" alt="Miku">
+</div>
+
+<!-- 🎵 Online voice files -->
+<audio id="voice_low" src="https://files.catbox.moe/0owj0t.mp3"></audio>
+<audio id="voice_high" src="https://files.catbox.moe/klj6ug.mp3"></audio>
+<audio id="voice_correct" src="https://files.catbox.moe/vi7hcm.mp3"></audio>
+
+<script type="text/python">
+from browser import document, window
+import random
+
+secret = random.randint(1, 100)
+
+def play(sound_id):
+    window.document[sound_id].play()
+
+def check(ev):
+    global secret
+    msg = document["message"]
+    guess_value = document["guess"].value
+
+    if guess_value == "":
+        msg.text = "Enter a number!"
+        return
+
+    guess = int(guess_value)
+
+    if guess < secret:
+        msg.text = "Too low! 📉"
+        play("voice_low")
+
+    elif guess > secret:
+        msg.text = "Too high! 📈"
+        play("voice_high")
+
+    else:
+        msg.text = "Correct! You win! 🎉💙"
+        play("voice_correct")
+        secret = random.randint(1, 100)
+
+document["check"].bind("click", check)
+</script>
+
+</body>
+</html>

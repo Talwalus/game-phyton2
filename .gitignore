@@ -1,0 +1,8 @@
+/.venv
+server.log
+install.log
+nohup.out
+*.pyc
+__pycache__/
+.vscode/
+.DS_Store
